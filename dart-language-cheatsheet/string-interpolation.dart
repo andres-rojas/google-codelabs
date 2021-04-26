@@ -3,7 +3,7 @@ import './test.dart';
 void main() {
   test(
     'stringify returns a string containing both integers separated by a space',
-    stringify(2, 3) == '2 3',
+    () => stringify(2, 3) == '2 3',
   );
 }
 

@@ -1,8 +1,10 @@
 import 'package:ansicolor/ansicolor.dart';
 
-void test(String description, bool result) {
+typedef bool TestFn();
+
+void test(String description, TestFn t) {
   AnsiPen green = new AnsiPen()..green(bold: true);
   AnsiPen red = new AnsiPen()..red(bold: true);
 
-  print(result ? green('Pass: ' + description) : red('FAIL: ' + description));
+  print(t() ? green('Pass: ' + description) : red('FAIL: ' + description));
 }
