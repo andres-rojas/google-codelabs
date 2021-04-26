@@ -5,6 +5,7 @@ void main() {
     Test(
       'assign aListOfStrings a list containing \'a\', \'b\', and \'c\' in that order',
       () =>
+          aListOfStrings.length == 3 &&
           aListOfStrings[0] == 'a' &&
           aListOfStrings[1] == 'b' &&
           aListOfStrings[2] == 'c',
