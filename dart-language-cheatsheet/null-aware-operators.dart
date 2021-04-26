@@ -1,18 +1,19 @@
-import './test.dart';
+import './tests.dart';
 
 void main() {
-  test(
-    'Substitute an operator that makes \'a string\' be assigned to baz.',
-    () => baz == 'a string',
-  );
-
-  test(
-    'Substitute an operator that makes \'a string\' be assigned to bar.',
-    () {
-      updateSomeVars();
-      return bar == 'a string';
-    },
-  );
+  Tests([
+    Test(
+      'Substitute an operator that makes \'a string\' be assigned to baz.',
+      () => baz == 'a string',
+    ),
+    Test(
+      'Substitute an operator that makes \'a string\' be assigned to bar.',
+      () {
+        updateSomeVars();
+        return bar == 'a string';
+      },
+    ),
+  ]).run();
 }
 
 String? foo = 'a string';

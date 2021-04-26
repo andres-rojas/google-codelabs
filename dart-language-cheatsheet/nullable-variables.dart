@@ -1,15 +1,16 @@
-import './test.dart';
+import './tests.dart';
 
 void main() {
-  test(
-    'Declare a nullable String named name with the value \'Jane\'',
-    () => name == 'Jane',
-  );
-
-  test(
-    'Declare a nullable String named address with the value null',
-    () => address == null,
-  );
+  Tests([
+    Test(
+      'Declare a nullable String named name with the value \'Jane\'',
+      () => name == 'Jane',
+    ),
+    Test(
+      'Declare a nullable String named address with the value null',
+      () => address == null,
+    ),
+  ]).run();
 }
 
 String? name = 'Jane';
