@@ -15,7 +15,7 @@ void main() {
     () {
       expect(
         () => ShoppingCart()..prices = [5.0, -10.5],
-        throwsA(TypeMatcher<InvalidPriceException>()),
+        throwsA(isA<InvalidPriceException>()),
       );
     },
   );
