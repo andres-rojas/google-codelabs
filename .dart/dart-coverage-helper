@@ -1,0 +1,73 @@
+#!/bin/sh
+
+basename() {
+  : "${1%/}"
+  printf '%s\n' "${_##*/}"
+}
+
+show_help() {
+  name=$(basename "${0}")
+  cat <<EOF
+${name} adds lib/*.dart files to the `dart test --coverage` scope
+Usage:
+  ${name} [PACKAGE_ROOT_PATH]
+  ${name} -h | --help | -?
+Options:
+  -h, --help, -?  Show this help message
+EOF
+  exit 0
+}
+
+# Options parsing
+POSITIONAL=()
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -\?|-h|--help)
+      show_help
+      ;;
+    *)
+      POSITIONAL+=("$1")
+      shift
+  esac
+done
+set -- "${POSITIONAL[@]}"
+
+if [ $# -gt 1 ]; then
+  printf 'Too many arguments passed\n' >82
+  show_help
+  exit 1
+fi
+
+if [ $# -eq 1 ]; then
+  cd "$1"
+fi
+
+# The following is essentially copied wholesale from:
+# https://github.com/priezz/dart_full_coverage
+
+outputFile="$(pwd)/test/coverage_test.dart"
+packageName="$(cat pubspec.yaml | grep '^name: ' | awk '{print $2}')"
+
+if [ "$packageName" = '' ]; then
+  printf 'Run %s from the root of your Dart/Flutter project' "$(basename)"
+  exit 1
+fi
+
+cat <<EOF > "${outputFile}"
+/// *** GENERATED FILE - ANY CHANGES WOULD BE OBSOLETE ON NEXT GENERATION *** ///
+
+/// Helper to test coverage for all project files
+// ignore_for_file: unused_import
+EOF
+
+# Not sure what these grep filters are for, may want to add them back in later:
+# grep -v 'generated_plugin_registrant' |
+find lib -name '*.dart' \
+  | grep -v '.g.dart' \
+  | awk -v package=${packageName} \
+    '{gsub("^lib", "", $1); printf("import '\''package:%s%s'\'';\n", package, $1);}' \
+  >> "${outputFile}"
+
+printf '\nvoid main() {}\n' >> "${outputFile}"
+
+exit 0
