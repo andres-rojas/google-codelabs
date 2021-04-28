@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 basename() {
   : "${1%/}"
@@ -32,13 +32,13 @@ while [[ $# -gt 0 ]]; do
 done
 set -- "${POSITIONAL[@]}"
 
-if [ $# -gt 1 ]; then
+if [[ $# -gt 1 ]]; then
   printf 'Too many arguments passed\n' >82
   show_help
   exit 1
 fi
 
-if [ $# -eq 1 ]; then
+if [[ $# -eq 1 ]]; then
   cd "$1"
 fi
 
@@ -48,7 +48,7 @@ fi
 outputFile="$(pwd)/test/coverage_test.dart"
 packageName="$(cat pubspec.yaml | grep '^name: ' | awk '{print $2}')"
 
-if [ "$packageName" = '' ]; then
+if [[ "$packageName" = '' ]]; then
   printf 'Run %s from the root of your Dart/Flutter project' "$(basename)"
   exit 1
 fi
