@@ -1,0 +1,41 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Dart
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test-dart-language-cheatsheet:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./dart-language-cheatsheet
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: dart-lang/setup-dart@9a04e6d73cca37bd455e0608d7e5092f881fd603
+      - name: Install dependencies
+        run: dart pub get
+        working-directory: ${{env.working-directory}}
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+        working-directory: ${{env.working-directory}}
+      - name: Analyze project source
+        run: dart analyze
+        working-directory: ${{env.working-directory}}
+      - name: Run tests
+        run: dart test --coverage coverage
+        working-directory: ${{env.working-directory}}
+      - name: Collect test coverage
+        run: dart run coverage:format_coverage --in coverage/test/ --lcov --out coverage/lcov.info
+        working-directory: ${{env.working-directory}}
+      - uses: codecov/codecov-action@v1
+        name: Publish coverage
+        with:
+          file: ${{env.working-directory}}/coverage/lcov.info
