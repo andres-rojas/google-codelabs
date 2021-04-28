@@ -29,6 +29,8 @@ jobs:
       - name: Analyze project source
         run: dart analyze
         working-directory: ${{env.working-directory}}
+      - name: Include all in test coverage scan
+        run: .dart/dart-coverage-helper ${{env.working-directory}}
       - name: Run tests
         run: dart test --coverage coverage
         working-directory: ${{env.working-directory}}
